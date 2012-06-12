@@ -18,7 +18,7 @@ Options:
   -t TIMEOUT, --timeout=TIMEOUT
                         timeout for a particular hash. :TIMEOUT: will be
                         outputted as the password
-
+                        
   Suplementary executable locations:
     If your file locations differ from the default use these options
     
