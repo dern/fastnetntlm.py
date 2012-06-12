@@ -21,6 +21,7 @@ Options:
 
   Suplementary executable locations:
     If your file locations differ from the default use these options
+    
     -p PERL, --perlpath=PERL
                         path to perl (default is /usr/bin/perl)
     -j JOHNNETNTLM, --johnnetntlm=JOHNNETNTLM
