@@ -30,5 +30,5 @@ Options:
     -r RCRACKI, --rcracki=RCRACKI
                         path to rcracki_mt (default is /usr/bin/rcracki_mt)
 
-Sample usage
+Sample usage:
 python ~/fastnetntlm.py -b /tables/rti/lm_chal/ -v -r /tools/rcracki/rcracki_mt -j /tools/jtr-1.7.6-jumbo7/netntlm.pl -o tmpout.txt -t 3600 john.smb.hashes
