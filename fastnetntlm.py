@@ -17,6 +17,7 @@
 
 from __future__ import with_statement # Required in 2.5
 from sys import *
+import sys
 import os
 import time
 import subprocess
@@ -52,7 +53,7 @@ parser.add_option("-a", "--alpha",      action="store", type="string", dest="rt_
 parser.add_option("-b", "--all",        action="store", type="string", dest="rt_allspace", help="path to halflmchall_all-space rainbow tables")
 parser.add_option("-v", "--verbose",    action="store_true",           dest="verbose",     help="don't print status messages to stdout", default=False)
 parser.add_option("-o", "--output",	action="store", type="string", dest="output",	help="output file containing passwords", default=False)
-parser.add_option("-t", "--timeout",	action="store",	type="int", dest="timeout",	help="timeout for a particular hash. :TIMEOUT: will be outputted as the password", default=0)
+parser.add_option("-t", "--timeout",	action="store",	type="int", dest="timeout",	help="timeout for bruteforcing the 7+ characters of a particular hash. :TIMEOUT: will be outputted as the password", default=0)
 
 group = OptionGroup(parser, "Suplementary executable locations", "If your file locations differ from the default use these options")
 group.add_option("-p", "--perlpath",    action="store", type="string", dest="perl",        help="path to perl (default is /usr/bin/perl)", default="/usr/bin/perl")
@@ -99,13 +100,24 @@ for line in hashes:
 	try:
 		with time_limit(options.timeout):
 			if options.verbose: print "Processing " + line.replace("\n","")
-			
-			# parse the file
-			user = line.split(":")[0] 
-			domain = line.split(":")[2] 
-			lmhash = line.split(":")[3]
-			lmhash_first = lmhash[0:16]
-			
+			if line.count(":") == 5:	
+				# parse the file
+				user = line.split(":")[0] 
+				domain = line.split(":")[2] 
+				lmhash = line.split(":")[3]
+				lmhash_first = lmhash[0:16]
+			elif line.count(":") == 4:
+				user = line.split(":")[0]
+                                domain = line.split(":")[1]
+                                lmhash = line.split(":")[3]
+				nthash = line.split(":")[4].replace("\n","")
+				lmchal = line.split(":")[2]
+                                lmhash_first = lmhash[0:16]
+				line = user+"::"+domain+":"+lmhash+":"+nthash+":"+lmchal+"\n"
+				if options.verbose: print "Looks like Cain format. Converting to John "+line
+			else:
+				print "Unknown hash format. Exiting..."
+				sys.exit(0)
 			#check output file to see if hash has already been cracked
 			if options.output and os.path.exists(options.output):
 				outfile = open(options.output,'r')
@@ -138,6 +150,8 @@ for line in hashes:
 				if options.verbose: print str("Running: " + options.perl + " " + options.johnnetntlm + " --seed \'" + seed + "\' --file " + singlehashfile)
 				out = process.communicate()
 				#print "out=%s" % (out,)
+
+				
 				#pull case insensitive password out of output and feed it as the seed of the same command
 				for line in out[0].splitlines():
 					if line.find("(" + user +")") > 0:
@@ -159,6 +173,10 @@ for line in hashes:
 							passwd = line.split(":")[1]
 							#pass =print domain + " " + user + " " + line.split()[0]
 							#print "passwd=" + passwd
+				if not passwd:
+					print "Running netntlm.pl failed. John output:"
+					print "out=%s" % (out,)
+					sys.exit(0)
 
 	except TimeoutException, msg:
 		passwd=":TIMEOUT:"
