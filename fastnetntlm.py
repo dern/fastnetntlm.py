@@ -5,7 +5,11 @@
 # Contact:     timmedin [@] securitywhole [d0t] com
 # Updated By:  Dan Borkowski
 # Name:        fastnetntlm.py
+<<<<<<< HEAD
 # Version:     0.2
+=======
+# Version:     0.11
+>>>>>>> b6d503604b7289264cefa91f56e84aaed4a65a4a
 # Description: An automated method of reading netntlm hashes and cracking them
 ####################################################################################
 
@@ -45,6 +49,7 @@ def time_limit(seconds):
     finally:
         signal.alarm(0)
 
+<<<<<<< HEAD
 #originally SIGINT would occassionally require 'stty sane/reset'
 def signal_handler(signal, frame):
         try:
@@ -55,6 +60,10 @@ def signal_handler(signal, frame):
 signal.signal(signal.SIGINT, signal_handler)
 
 usage = "usage: %prog [options] hash[or]hashfile"
+=======
+
+usage = "usage: %prog [options] hashesfile"
+>>>>>>> b6d503604b7289264cefa91f56e84aaed4a65a4a
 parser = OptionParser(usage=usage, version="%prog 0.1")
 #parser.add_option("-f", "--hashesfile", action="store", type="string", dest="hashesfile",  help="file containing the hashes")
 parser.add_option("-a", "--alpha",      action="store", type="string", dest="rt_alpha",    help="path to halflmchall_alpha-numeric rainbow tables")
@@ -90,13 +99,18 @@ if len(rtables) == 0:
 
 # ensure an input file is specified
 if len(args) == 0:
+<<<<<<< HEAD
         parser.error("No hash or hash file specified")
+=======
+        parser.error("No hashes file specified")
+>>>>>>> b6d503604b7289264cefa91f56e84aaed4a65a4a
         OptionParser.print_usage()
 
 # TODO: FIX THIS THE RIGHT WAY
 #print "Make sure you copy the charset.txt file from the directory rcracki_mt runs in"
 
 # open hashes file and remove duplidates
+<<<<<<< HEAD
 hashes = set([])
 if os.path.exists(args[0]):
 	fin = open(args[0],"r")
@@ -109,6 +123,13 @@ else:
 	"Bad hash or hash file. Try again."
 	parser.error("Bad hash or hash file. Try harder.")
         OptionParser.print_usage()
+=======
+fin = open(args[0],"r")
+hashes = set([])
+for hashrow in fin:
+        hashes.add(hashrow)
+fin.close()
+>>>>>>> b6d503604b7289264cefa91f56e84aaed4a65a4a
 
 # crack away baby
 for line in hashes:
@@ -129,7 +150,11 @@ for line in hashes:
 				lmchal = line.split(":")[2]
                                 lmhash_first = lmhash[0:16]
 				line = user+"::"+domain+":"+lmhash+":"+nthash+":"+lmchal+"\n"
+<<<<<<< HEAD
 				if options.verbose: print "Looks like Cain format. Converting to John "+line.replace("\n","")
+=======
+				if options.verbose: print "Looks like Cain format. Converting to John "+line
+>>>>>>> b6d503604b7289264cefa91f56e84aaed4a65a4a
 			else:
 				print "Unknown hash format. Exiting..."
 				sys.exit(0)
@@ -198,10 +223,17 @@ for line in hashes:
 	except AlreadyCracked, msg:
 		continue
 
+<<<<<<< HEAD
 	print domain + "/" + user + " " +  passwd 
 	if options.output:
 			outputfile = open(options.output,'a')
 			outputfile.write(domain + "/" + user + " " +  passwd + "\n")
+=======
+	print domain + " " + user + " " +  passwd 
+	if options.output:
+			outputfile = open(options.output,'a')
+			outputfile.write(domain + " " + user + " " +  passwd + "\n")
+>>>>>>> b6d503604b7289264cefa91f56e84aaed4a65a4a
 			outputfile.close()
 			#print passwd
 	try:
