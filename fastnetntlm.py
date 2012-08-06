@@ -161,7 +161,7 @@ for line in hashes:
 
 				if options.verbose: print str(datetime.now()) + ": Bruteforcing the remainder of " + user + "'s password  " + seed
 				process = subprocess.Popen(options.perl + " " + options.johnnetntlm + " --seed \'" + seed + "\' --file " + singlehashfile, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-				if options.verbose: print str("Running: " + options.perl + " " + options.johnnetntlm + " --seed \'" + seed + "\' --file " + singlehashfile)
+				#if options.verbose: print str(datetime.now()) + "Running: " + options.perl + " " + options.johnnetntlm + " --seed \'" + seed + "\' --file " + singlehashfile)
 				out = process.communicate()
 				#print "out=%s" % (out,)
 
