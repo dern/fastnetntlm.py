@@ -132,6 +132,12 @@ for line in hashes:
 			else:
 				print "Unknown hash format. Exiting..."
 				sys.exit(0)
+
+			#check for and skip computer accounts
+			if "$" in user:
+				print user + "looks like a computer account. Skipping."
+				continue			
+
 			#check output file to see if hash has already been cracked
 			if options.output and os.path.exists(options.output):
 				outfile = open(options.output,'r')
