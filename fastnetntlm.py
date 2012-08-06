@@ -5,7 +5,7 @@
 # Contact:     timmedin [@] securitywhole [d0t] com
 # Updated By:  Dan Borkowski
 # Name:        fastnetntlm.py
-# Version:     0.11
+# Version:     0.2
 # Description: An automated method of reading netntlm hashes and cracking them
 ####################################################################################
 
@@ -45,8 +45,16 @@ def time_limit(seconds):
     finally:
         signal.alarm(0)
 
+#originally SIGINT would occassionally require 'stty sane/reset'
+def signal_handler(signal, frame):
+        try:
+		os.system("stty sane")
+		sys.exit(0)
+	except:
+		sys.exit(0)
+signal.signal(signal.SIGINT, signal_handler)
 
-usage = "usage: %prog [options] hashesfile"
+usage = "usage: %prog [options] hash[or]hashfile"
 parser = OptionParser(usage=usage, version="%prog 0.1")
 #parser.add_option("-f", "--hashesfile", action="store", type="string", dest="hashesfile",  help="file containing the hashes")
 parser.add_option("-a", "--alpha",      action="store", type="string", dest="rt_alpha",    help="path to halflmchall_alpha-numeric rainbow tables")
@@ -82,18 +90,25 @@ if len(rtables) == 0:
 
 # ensure an input file is specified
 if len(args) == 0:
-        parser.error("No hashes file specified")
+        parser.error("No hash or hash file specified")
         OptionParser.print_usage()
 
 # TODO: FIX THIS THE RIGHT WAY
 #print "Make sure you copy the charset.txt file from the directory rcracki_mt runs in"
 
 # open hashes file and remove duplidates
-fin = open(args[0],"r")
 hashes = set([])
-for hashrow in fin:
-        hashes.add(hashrow)
-fin.close()
+if os.path.exists(args[0]):
+	fin = open(args[0],"r")
+	for hashrow in fin:
+		hashes.add(hashrow)
+	fin.close()
+elif args[0].count(":") == 4 or args[0].count(":") == 6:
+	hashes.add(args[0])
+else:
+	"Bad hash or hash file. Try again."
+	parser.error("Bad hash or hash file. Try harder.")
+        OptionParser.print_usage()
 
 # crack away baby
 for line in hashes:
@@ -114,7 +129,7 @@ for line in hashes:
 				lmchal = line.split(":")[2]
                                 lmhash_first = lmhash[0:16]
 				line = user+"::"+domain+":"+lmhash+":"+nthash+":"+lmchal+"\n"
-				if options.verbose: print "Looks like Cain format. Converting to John "+line
+				if options.verbose: print "Looks like Cain format. Converting to John "+line.replace("\n","")
 			else:
 				print "Unknown hash format. Exiting..."
 				sys.exit(0)
@@ -183,10 +198,10 @@ for line in hashes:
 	except AlreadyCracked, msg:
 		continue
 
-	print domain + " " + user + " " +  passwd 
+	print domain + "/" + user + " " +  passwd 
 	if options.output:
 			outputfile = open(options.output,'a')
-			outputfile.write(domain + " " + user + " " +  passwd + "\n")
+			outputfile.write(domain + "/" + user + " " +  passwd + "\n")
 			outputfile.close()
 			#print passwd
 	try:
