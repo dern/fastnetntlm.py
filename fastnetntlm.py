@@ -1,18 +1,12 @@
 #!/usr/bin/env python
 
 ####################################################################################
-# Author:      Tim Medin
-# Contact:     timmedin [@] securitywhole [d0t] com
-# Updated By:  Dan Borkowski
+# Author:      Dan Borkowski
+# Contact:     dernb[at]dernb.com
+# Orig Author: Tim Medin
 # Name:        fastnetntlm.py
-# Version:     0.11
+# Version:     0.2
 # Description: An automated method of reading netntlm hashes and cracking them
-####################################################################################
-
-
-####################################################################################
-# TODO:
-#    Errors due to invalid paths are not output, stat the files to ensure they exist
 ####################################################################################
 
 from __future__ import with_statement # Required in 2.5
@@ -59,14 +53,14 @@ parser = OptionParser(usage=usage, version="%prog 0.2")
 #parser.add_option("-f", "--hashesfile", action="store", type="string", dest="hashesfile",  help="file containing the hashes")
 parser.add_option("-a", "--alpha",      action="store", type="string", dest="rt_alpha",    help="path to halflmchall_alpha-numeric rainbow tables")
 parser.add_option("-b", "--all",        action="store", type="string", dest="rt_allspace", help="path to halflmchall_all-space rainbow tables")
-parser.add_option("-v", "--verbose",    action="store_true",           dest="verbose",     help="don't print status messages to stdout", default=False)
+parser.add_option("-v", "--verbose",    action="store_true",           dest="verbose",     help="print status messages", default=False)
 parser.add_option("-o", "--output",	action="store", type="string", dest="output",	help="optional output file containing passwords", default=False)
-parser.add_option("-t", "--timeout",	action="store",	type="int", dest="timeout",	help="optional timeout for bruteforcing the 7+ characters of a particular hash. :TIMEOUT: will be outputted as the password", default=0)
+parser.add_option("-t", "--timeout",	action="store",	type="int", dest="timeout",	help="optional timeout for bruteforcing the 7+ characters of a particular hash. If the timeout if reached, :TIMEOUT: will be outputted as the password", default=0)
 
 group = OptionGroup(parser, "Suplementary executable locations", "If your file locations differ from the default use these options")
-group.add_option("-p", "--perlpath",    action="store", type="string", dest="perl",        help="path to perl (default is /usr/bin/perl)", default="/usr/bin/perl")
-group.add_option("-j", "--johnnetntlm", action="store", type="string", dest="johnnetntlm", help="path to John the Ripper's netntlm.pl from Jumbo Pack (default is /usr/share/john/netntlm.pl)", default="/usr/share/john/netntlm.pl")
-group.add_option("-r", "--rcracki",     action="store", type="string", dest="rcracki",     help="path to rcracki_mt (default is /usr/bin/rcracki_mt)", default="/usr/bin/rcracki_mt")
+group.add_option("-p", "--perlpath",    action="store", type="string", dest="perl",        help="path to perl [default: %default]", default="/usr/bin/perl")
+group.add_option("-j", "--johnnetntlm", action="store", type="string", dest="johnnetntlm", help="path to John the Ripper's netntlm.pl from Jumbo Pack [default: %default]", default="/usr/share/john/netntlm.pl")
+group.add_option("-r", "--rcracki",     action="store", type="string", dest="rcracki",     help="path to rcracki_mt [default: %default]", default="/usr/bin/rcracki_mt")
 parser.add_option_group(group)
 
 (options, args) = parser.parse_args()
