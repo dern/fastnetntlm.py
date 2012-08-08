@@ -102,7 +102,7 @@ if os.path.exists(args[0]):
 	for hashrow in fin:
 		hashes.add(hashrow)
 	fin.close()
-elif args[0].count(":") == 4 or args[0].count(":") == 6:
+elif args[0].count(":") == 4 or args[0].count(":") == 5:
 	hashes.add(args[0])
 else:
 	"Bad hash or hash file. Try again."
@@ -135,7 +135,7 @@ for line in hashes:
 
 			#check for and skip computer accounts
 			if "$" in user:
-				print user + "looks like a computer account. Skipping."
+				print domain + "/" + user + " looks like a computer account. Skipping."
 				continue			
 
 			#check output file to see if hash has already been cracked
