@@ -1,8 +1,8 @@
 #!/usr/bin/env python
 
 ####################################################################################
-# Author:      Dan Borkowski
-# Contact:     dernb[at]dernb.com
+# Maintainer:  Dan Borkowski
+# Contact:     dernb[at]dernb[dot]com
 # Orig Author: Tim Medin
 # Name:        fastnetntlm.py
 # Version:     0.2
@@ -50,7 +50,6 @@ signal.signal(signal.SIGINT, signal_handler)
 
 usage = "usage: %prog [options] hash[or]hashfile"
 parser = OptionParser(usage=usage, version="%prog 0.2")
-#parser.add_option("-f", "--hashesfile", action="store", type="string", dest="hashesfile",  help="file containing the hashes")
 parser.add_option("-a", "--alpha",      action="store", type="string", dest="rt_alpha",    help="path to halflmchall_alpha-numeric rainbow tables")
 parser.add_option("-b", "--all",        action="store", type="string", dest="rt_allspace", help="path to halflmchall_all-space rainbow tables")
 parser.add_option("-v", "--verbose",    action="store_true",           dest="verbose",     help="print status messages", default=False)
