@@ -54,7 +54,7 @@ parser.add_option("-a", "--alpha",      action="store", type="string", dest="rt_
 parser.add_option("-b", "--all",        action="store", type="string", dest="rt_allspace", help="path to halflmchall_all-space rainbow tables")
 parser.add_option("-v", "--verbose",    action="store_true",           dest="verbose",     help="print status messages", default=False)
 parser.add_option("-o", "--output",	action="store", type="string", dest="output",	help="optional output file containing passwords", default=False)
-parser.add_option("-t", "--timeout",	action="store",	type="int", dest="timeout",	help="optional timeout for bruteforcing the 7+ characters of a particular hash. If the timeout if reached, :TIMEOUT: will be outputted as the password", default=0)
+parser.add_option("-t", "--timeout",	action="store",	type="int", dest="timeout",	help="optional timeout for bruteforcing the 7+ characters of a particular hash. If the timeout if reached, <timeout> will be outputted as the password", default=0)
 
 group = OptionGroup(parser, "Suplementary executable locations", "If your file locations differ from the default use these options")
 group.add_option("-p", "--perlpath",    action="store", type="string", dest="perl",        help="path to perl [default: %default]", default="/usr/bin/perl")
@@ -190,9 +190,12 @@ for line in hashes:
 					print "Running netntlm.pl failed. John output:"
 					print "out=%s" % (out,)
 					sys.exit(0)
+			elif seed == "<notfound>"
+				print "Cannot find seed in rainbow tables for" + domain + "/" + user
+				passwd = "<notfound>"
 
 	except TimeoutException, msg:
-		passwd=":TIMEOUT:"
+		passwd="<timeout>"
 	except AlreadyCracked, msg:
 		continue
 
