@@ -190,7 +190,7 @@ for line in hashes:
 					print "Running netntlm.pl failed. John output:"
 					print "out=%s" % (out,)
 					sys.exit(0)
-			elif seed == "<notfound>"
+			elif seed == "<notfound>":
 				print "Cannot find seed in rainbow tables for" + domain + "/" + user
 				passwd = "<notfound>"
 
