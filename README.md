@@ -3,7 +3,8 @@ fastnetntlm.py
 
 This script will quickly crack netntlm LM hashes when given a John/Cain NTLMv1 hash or hashfile. It uses rcracki and rainbow tables to recover the first 7 characters, then uses John's netntlm.pl to bruteforce the remaining characters. Original code swiped from Tim Medin (http://pauldotcom.com/wiki/index.php/Episode270)
 
-```Usage: fastnetntlm.py [options] hash[or]hashfile
+```
+Usage: fastnetntlm.py [options] hash[or]hashfile
 
 Options:
   --version             show program's version number and exit
