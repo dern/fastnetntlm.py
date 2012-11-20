@@ -159,7 +159,7 @@ for line in hashes:
 				fout.close()
 
 				if options.verbose: print str(datetime.now()) + ": Bruteforcing the remainder of " + user + "'s password  " + seed
-				process = subprocess.Popen(options.perl + " " + options.johnnetntlm + " --seed \'" + seed + "\' --file " + singlehashfile, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+				process = subprocess.Popen(options.perl + " " + options.johnnetntlm + " --seed \'" + seed + "\' --file \'" + singlehashfile + "\'", shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
 				#if options.verbose: print str(datetime.now()) + "Running: " + options.perl + " " + options.johnnetntlm + " --seed \'" + seed + "\' --file " + singlehashfile)
 				out = process.communicate()
 				#print "out=%s" % (out,)
@@ -169,7 +169,7 @@ for line in hashes:
 				for line in out[0].splitlines():
 					if line.find("(" + user +")") > 0:
 						seed = line.split()[0]	
-				process = subprocess.Popen(options.perl + " " + options.johnnetntlm + " --seed \'" + seed + "\' --file " + singlehashfile, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+				process = subprocess.Popen(options.perl + " " + options.johnnetntlm + " --seed \'" + seed + "\' --file \'" + singlehashfile + "\'", shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
 				out = process.communicate()
 				#print "out=%s" % (out,)
 				# check the output. the first part looks for a new crack                
